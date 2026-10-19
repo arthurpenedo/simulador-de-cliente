@@ -1,5 +1,7 @@
 # simulador-de-cliente
 
+[![CI](https://github.com/arthurpenedo/simulador-de-cliente/actions/workflows/ci.yml/badge.svg)](https://github.com/arthurpenedo/simulador-de-cliente/actions/workflows/ci.yml)
+
 Treinar atendente para cliente difícil (irritado, golpista, pedido fora da política) normalmente depende de role-play com outra pessoa. Este projeto coloca uma **persona de cliente** na conversa e avalia o atendente com uma **rubrica explicável** (empatia, política, segurança), mostrando a evidência de cada nota e onde melhorar.
 
 Tudo gratuito e local: zero dependências, sem API paga. O cliente pode ser um roteiro determinístico (testes/CI) ou um modelo aberto via [Ollama](https://ollama.com). A empresa e as regras são fictícias (Banco Exemplo).
