@@ -35,6 +35,9 @@ pytest -q
 | Simulação, atendente "bom" | desfecho bom em 100% das 200 simulações (50 por persona) |
 | Simulação, atendente "regular" ou "ruim" | desfecho bom em 0% das 400 simulações |
 
+## Página de demo
+`simulador-de-cliente demo --saida site/index.html` gera uma página estática com três conversas simuladas (atendente bom, regular e ruim) e a nota da rubrica com a evidência. O workflow `.github/workflows/pagina.yml` publica no GitHub Pages a cada push na `main` (ativar uma vez em Settings → Pages → Source = GitHub Actions). Link: https://arthurpenedo.github.io/simulador-de-cliente/ (vale depois da primeira execução).
+
 ## Limites honestos
 
 - Os diálogos sintéticos e o cliente por roteiro foram escritos pelo mesmo autor da rubrica: o benchmark mede a **mecânica** (rubrica, humor, desfecho), não o desempenho com atendentes reais nem com um modelo. Por isso os 100%/0% das simulações são esperados.

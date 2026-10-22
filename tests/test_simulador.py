@@ -112,3 +112,16 @@ def test_cli_treinar_auto_e_avaliar(tmp_path, capsys):
     assert "Desfecho: cliente acalmado" in saida and "Total:" in saida
     assert main(["avaliar", str(arq)]) == 0
     assert "empatia" in capsys.readouterr().out
+
+
+def test_demo_html_tem_tres_conversas_e_notas():
+    from simulador_de_cliente.demo import gerar_html
+    html = gerar_html()
+    assert html.count("class='conv'") == 3
+    assert "atendente bom" in html and "atendente ruim" in html and "Total:" in html
+
+
+def test_cli_demo_grava_arquivo(tmp_path):
+    saida = tmp_path / "site" / "index.html"
+    assert main(["demo", "--saida", str(saida)]) == 0
+    assert "simulador-de-cliente: demo" in saida.read_text(encoding="utf-8")

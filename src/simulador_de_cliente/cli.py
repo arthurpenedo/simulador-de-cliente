@@ -44,6 +44,10 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("--semente", type=int, default=42)
     b.add_argument("--saida")
 
+    d = sub.add_parser("demo", help="gera a página HTML de demo (3 conversas simuladas com a nota da rubrica)")
+    d.add_argument("--saida", default="site/index.html")
+    d.add_argument("--persona", choices=sorted(PERSONAS), default="irritado")
+
     args = p.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")  # consoles Windows em cp1252 quebram com "→" e aspas
@@ -71,6 +75,12 @@ def main(argv: list[str] | None = None) -> int:
         print(texto)
         if args.saida:
             Path(args.saida).write_text(texto + "\n", encoding="utf-8")
+    elif args.cmd == "demo":
+        from .demo import gerar_html
+        saida = Path(args.saida)
+        saida.parent.mkdir(parents=True, exist_ok=True)
+        saida.write_text(gerar_html(args.persona), encoding="utf-8")
+        print(f"página gravada em {saida}")
     return 0
 
 

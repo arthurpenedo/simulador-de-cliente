@@ -34,6 +34,12 @@ def acerto_curados() -> tuple[int, int, list[str]]:
     return certos, len(CURADOS), falhas
 
 
+def rodar_acerto_resumo(n_dialogos: int = 300, semente: int = 42) -> str:
+    ac = avaliar_acerto(n_dialogos, semente)
+    return (f"Acerto médio da rubrica contra o rótulo em {n_dialogos} diálogos sintéticos (semente {semente}): "
+            f"{ac['media']:.1%}, contra {ac['baseline']:.1%} do baseline (sempre nota 1).")
+
+
 def rodar(n_simulacoes: int = 50, n_dialogos: int = 300, semente: int = 42) -> str:
     ac = avaliar_acerto(n_dialogos, semente)
     certos, total, falhas = acerto_curados()
