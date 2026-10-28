@@ -22,7 +22,7 @@ simulador-de-cliente treinar golpista --auto ruim        # atendente sintético
 simulador-de-cliente treinar irritado --motor ollama --modelo qwen2.5:7b --salvar conversa.json
 simulador-de-cliente avaliar conversa.json               # nota de uma conversa salva
 simulador-de-cliente benchmark --saida BENCHMARK.md
-pytest -q
+pytest -q                                      # 15 testes, sem internet
 ```
 
 ## Números medidos (`BENCHMARK.md`, semente 42)
