@@ -13,7 +13,7 @@ authors = [{ name = "Arthur Penedo" }]
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=8"]
+dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.scripts]
 simulador-de-cliente = "simulador_de_cliente.cli:main"
