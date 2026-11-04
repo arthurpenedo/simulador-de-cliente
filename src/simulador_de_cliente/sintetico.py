@@ -96,7 +96,7 @@ class AtendenteSintetico:
 
     def __init__(self, nivel: int, semente: int = 0):
         self.nivel, self.rng, self.i = nivel, random.Random(semente), 0
-        self._dialogo = montar({d: nivel for d in DIMENSOES}, self.rng, n_turnos=6)
+        self._dialogo = montar(dict.fromkeys(DIMENSOES, nivel), self.rng, n_turnos=6)
 
     def __call__(self, historico) -> str:
         fala = self._dialogo.turnos[self.i % len(self._dialogo.turnos)]
@@ -107,8 +107,8 @@ class AtendenteSintetico:
 def avaliar_acerto(n_dialogos: int = 300, semente: int = 42) -> dict[str, float]:
     """Exatidão da rubrica por dimensão em diálogos com níveis independentes sorteados."""
     rng = random.Random(semente)
-    acertos = {d: 0 for d in DIMENSOES}
-    base = {d: 0 for d in DIMENSOES}  # baseline: sempre prever 1
+    acertos = dict.fromkeys(DIMENSOES, 0)
+    base = dict.fromkeys(DIMENSOES, 0)  # baseline: sempre prever 1
     for _ in range(n_dialogos):
         niveis = {d: rng.choice((0, 1, 2)) for d in DIMENSOES}
         dlg = montar(niveis, rng)
