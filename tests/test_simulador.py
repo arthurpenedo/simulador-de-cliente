@@ -125,3 +125,28 @@ def test_cli_demo_grava_arquivo(tmp_path):
     saida = tmp_path / "site" / "index.html"
     assert main(["demo", "--saida", str(saida)]) == 0
     assert "simulador-de-cliente: demo" in saida.read_text(encoding="utf-8")
+
+
+def test_cli_personas_lista_todas(capsys):
+    from simulador_de_cliente.personas import PERSONAS
+
+    assert main(["personas"]) == 0
+    saida = capsys.readouterr().out
+    assert all(f"{pid}:" in saida for pid in PERSONAS)
+
+
+def test_cli_benchmark_grava_saida(tmp_path, capsys):
+    arq = tmp_path / "b.md"
+    assert main(["benchmark", "--simulacoes", "3", "--dialogos", "5", "--saida", str(arq)]) == 0
+    assert arq.read_text(encoding="utf-8").strip() == capsys.readouterr().out.strip()
+
+
+def test_atendente_humano_sem_entrada_encerra(monkeypatch, capsys):
+    from simulador_de_cliente.cli import _atendente_humano
+
+    def sem_entrada(_prompt=""):
+        raise EOFError
+
+    monkeypatch.setattr("builtins.input", sem_entrada)
+    assert _atendente_humano([("cliente", "Olá")]) == ""
+    assert "CLIENTE: Olá" in capsys.readouterr().out
