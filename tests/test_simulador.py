@@ -150,3 +150,24 @@ def test_atendente_humano_sem_entrada_encerra(monkeypatch, capsys):
     monkeypatch.setattr("builtins.input", sem_entrada)
     assert _atendente_humano([("cliente", "Olá")]) == ""
     assert "CLIENTE: Olá" in capsys.readouterr().out
+
+
+def test_cli_avaliar_arquivo_ruim_da_erro_claro(tmp_path, capsys):
+    from simulador_de_cliente.cli import main
+    assert main(["avaliar", str(tmp_path / "nao-existe.json")]) == 2
+    quebrado = tmp_path / "q.json"
+    quebrado.write_text("{nao é json", encoding="utf-8")
+    assert main(["avaliar", str(quebrado)]) == 2
+    objeto = tmp_path / "o.json"
+    objeto.write_text('{"autor": "atendente"}', encoding="utf-8")
+    assert main(["avaliar", str(objeto)]) == 2
+    assert "Não consegui ler" in capsys.readouterr().err
+
+
+def test_cli_avaliar_ignora_falas_sem_chaves_e_aceita_bom(tmp_path, capsys):
+    from simulador_de_cliente.cli import main
+    arq = tmp_path / "c.json"
+    arq.write_text('[{"autor": "cliente"}, {"autor": "atendente"}, {"autor": "atendente", "texto": "Bom dia, como ajudo?"}]',
+                   encoding="utf-8-sig")
+    assert main(["avaliar", str(arq)]) == 0
+    assert capsys.readouterr().out.strip()

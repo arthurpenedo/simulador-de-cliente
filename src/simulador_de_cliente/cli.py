@@ -68,8 +68,16 @@ def main(argv: list[str] | None = None) -> int:
                 [{"autor": x, "texto": y} for x, y in res.turnos], ensure_ascii=False, indent=2),
                 encoding="utf-8")
     elif args.cmd == "avaliar":
-        dados = json.loads(Path(args.arquivo).read_text(encoding="utf-8"))
-        print(relatorio(avaliar_turnos([d["texto"] for d in dados if d["autor"] == "atendente"])))
+        try:
+            dados = json.loads(Path(args.arquivo).read_text(encoding="utf-8-sig"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as e:
+            print(f"Não consegui ler {args.arquivo}: {e}", file=sys.stderr)
+            return 2
+        if not isinstance(dados, list):
+            print("O arquivo deve ser uma lista de falas {autor, texto}.", file=sys.stderr)
+            return 2
+        falas = [d["texto"] for d in dados if isinstance(d, dict) and d.get("autor") == "atendente" and "texto" in d]
+        print(relatorio(avaliar_turnos(falas)))
     elif args.cmd == "benchmark":
         texto = rodar(args.simulacoes, args.dialogos, args.semente)
         print(texto)
