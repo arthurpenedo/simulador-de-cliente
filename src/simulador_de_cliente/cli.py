@@ -64,6 +64,7 @@ def main(argv: list[str] | None = None) -> int:
         if res.problemas_de_papel:
             print("\nFalas do cliente fora do papel: " + "; ".join(res.problemas_de_papel))
         if args.salvar:
+            Path(args.salvar).parent.mkdir(parents=True, exist_ok=True)
             Path(args.salvar).write_text(json.dumps(
                 [{"autor": x, "texto": y} for x, y in res.turnos], ensure_ascii=False, indent=2),
                 encoding="utf-8")
@@ -79,9 +80,13 @@ def main(argv: list[str] | None = None) -> int:
         falas = [d["texto"] for d in dados if isinstance(d, dict) and d.get("autor") == "atendente" and "texto" in d]
         print(relatorio(avaliar_turnos(falas)))
     elif args.cmd == "benchmark":
+        if args.simulacoes < 1 or args.dialogos < 1:
+            print("--simulacoes e --dialogos precisam ser 1 ou mais.", file=sys.stderr)
+            return 2
         texto = rodar(args.simulacoes, args.dialogos, args.semente)
         print(texto)
         if args.saida:
+            Path(args.saida).parent.mkdir(parents=True, exist_ok=True)
             Path(args.saida).write_text(texto + "\n", encoding="utf-8")
     elif args.cmd == "demo":
         from .demo import gerar_html
