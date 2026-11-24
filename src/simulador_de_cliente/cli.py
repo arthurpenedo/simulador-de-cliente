@@ -55,6 +55,9 @@ def main(argv: list[str] | None = None) -> int:
         for pe in PERSONAS.values():
             print(f"{pe.id}: {pe.nome}\n  {pe.resumo}")
     elif args.cmd == "treinar":
+        if args.max_turnos < 1:
+            print("--max-turnos precisa ser 1 ou mais.", file=sys.stderr)
+            return 2
         persona = PERSONAS[args.persona]
         nivel = {"bom": 2, "regular": 1, "ruim": 0}.get(args.auto)
         atendente = AtendenteSintetico(nivel) if nivel is not None else _atendente_humano

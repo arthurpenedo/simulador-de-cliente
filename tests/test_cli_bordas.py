@@ -19,3 +19,8 @@ def test_treinar_salvar_cria_a_pasta(tmp_path):
     saida = tmp_path / "conversas" / "c.json"
     assert main(["treinar", "irritado", "--auto", "bom", "--salvar", str(saida)]) == 0
     assert isinstance(json.loads(saida.read_text(encoding="utf-8")), list)
+
+
+def test_treinar_max_turnos_zero_devolve_2(capsys):
+    assert main(["treinar", "irritado", "--auto", "bom", "--max-turnos", "0"]) == 2
+    assert "1 ou mais" in capsys.readouterr().err
