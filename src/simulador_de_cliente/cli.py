@@ -80,7 +80,8 @@ def main(argv: list[str] | None = None) -> int:
         if not isinstance(dados, list):
             print("O arquivo deve ser uma lista de falas {autor, texto}.", file=sys.stderr)
             return 2
-        falas = [d["texto"] for d in dados if isinstance(d, dict) and d.get("autor") == "atendente" and "texto" in d]
+        falas = [d["texto"] for d in dados if isinstance(d, dict) and d.get("autor") == "atendente"
+                 and isinstance(d.get("texto"), str)]
         print(relatorio(avaliar_turnos(falas)))
     elif args.cmd == "benchmark":
         if args.simulacoes < 1 or args.dialogos < 1:

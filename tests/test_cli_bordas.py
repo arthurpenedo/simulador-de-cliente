@@ -24,3 +24,14 @@ def test_treinar_salvar_cria_a_pasta(tmp_path):
 def test_treinar_max_turnos_zero_devolve_2(capsys):
     assert main(["treinar", "irritado", "--auto", "bom", "--max-turnos", "0"]) == 2
     assert "1 ou mais" in capsys.readouterr().err
+
+
+def test_avaliar_ignora_fala_com_texto_que_nao_e_string(tmp_path, capsys):
+    arq = tmp_path / "conversa.json"
+    arq.write_text(json.dumps([
+        {"autor": "atendente", "texto": None},
+        {"autor": "atendente", "texto": 123},
+        {"autor": "atendente", "texto": "Sinto muito pelo transtorno, vou resolver agora."},
+    ]), encoding="utf-8")
+    assert main(["avaliar", str(arq)]) == 0
+    assert "empatia" in capsys.readouterr().out
