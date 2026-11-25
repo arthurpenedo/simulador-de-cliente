@@ -33,6 +33,15 @@ def test_saida_apontando_para_pasta_devolve_2(tmp_path, capsys):
     assert "pasta" in capsys.readouterr().err
 
 
+def test_saida_dentro_de_arquivo_devolve_2_sem_traceback(tmp_path, capsys):
+    arq = tmp_path / "arq.txt"
+    arq.write_text("x", encoding="utf-8")
+    assert main(["demo", "--saida", str(arq / "x.html")]) == 2
+    assert main(["benchmark", "--simulacoes", "1", "--dialogos", "1", "--saida", str(arq / "x.md")]) == 2
+    assert main(["treinar", "irritado", "--auto", "bom", "--salvar", str(arq / "c.json")]) == 2
+    assert "passa por um arquivo" in capsys.readouterr().err
+
+
 def test_avaliar_ignora_fala_com_texto_que_nao_e_string(tmp_path, capsys):
     arq = tmp_path / "conversa.json"
     arq.write_text(json.dumps([
