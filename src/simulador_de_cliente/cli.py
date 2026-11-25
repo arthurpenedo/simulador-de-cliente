@@ -51,6 +51,11 @@ def main(argv: list[str] | None = None) -> int:
     args = p.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")  # consoles Windows em cp1252 quebram com "→" e aspas
+    for opcao in ("saida", "salvar"):
+        destino = getattr(args, opcao, None)
+        if destino and Path(destino).is_dir():
+            print(f"--{opcao} aponta para uma pasta ({destino}); informe um arquivo.", file=sys.stderr)
+            return 2
     if args.cmd == "personas":
         for pe in PERSONAS.values():
             print(f"{pe.id}: {pe.nome}\n  {pe.resumo}")

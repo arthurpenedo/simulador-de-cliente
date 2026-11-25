@@ -26,6 +26,13 @@ def test_treinar_max_turnos_zero_devolve_2(capsys):
     assert "1 ou mais" in capsys.readouterr().err
 
 
+def test_saida_apontando_para_pasta_devolve_2(tmp_path, capsys):
+    assert main(["demo", "--saida", str(tmp_path)]) == 2
+    assert main(["benchmark", "--simulacoes", "1", "--dialogos", "1", "--saida", str(tmp_path)]) == 2
+    assert main(["treinar", "irritado", "--auto", "bom", "--salvar", str(tmp_path)]) == 2
+    assert "pasta" in capsys.readouterr().err
+
+
 def test_avaliar_ignora_fala_com_texto_que_nao_e_string(tmp_path, capsys):
     arq = tmp_path / "conversa.json"
     arq.write_text(json.dumps([
