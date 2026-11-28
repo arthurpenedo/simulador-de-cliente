@@ -83,7 +83,7 @@ def main(argv: list[str] | None = None) -> int:
     elif args.cmd == "avaliar":
         try:
             dados = json.loads(Path(args.arquivo).read_text(encoding="utf-8-sig"))
-        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as e:
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, RecursionError) as e:
             print(f"Não consegui ler {args.arquivo}: {e}", file=sys.stderr)
             return 2
         if not isinstance(dados, list):

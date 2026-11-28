@@ -162,6 +162,10 @@ def test_cli_avaliar_arquivo_ruim_da_erro_claro(tmp_path, capsys):
     objeto.write_text('{"autor": "atendente"}', encoding="utf-8")
     assert main(["avaliar", str(objeto)]) == 2
     assert "Não consegui ler" in capsys.readouterr().err
+    fundo = tmp_path / "fundo.json"
+    fundo.write_text("[" * 5000, encoding="utf-8")
+    assert main(["avaliar", str(fundo)]) == 2
+    assert "Não consegui ler" in capsys.readouterr().err
 
 
 def test_cli_avaliar_ignora_falas_sem_chaves_e_aceita_bom(tmp_path, capsys):
